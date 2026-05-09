@@ -1,0 +1,46 @@
+# ═══════════════════════════════════════════
+# AETERNA — Monorepo .gitignore
+# ═══════════════════════════════════════════
+
+# ── Python ────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# ── Node.js ───────────────────────────────
+node_modules/
+.next/
+out/
+.turbo/
+
+# ── Environment ──────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── IDE ──────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-*
+
+# ── OS ───────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ── Logs ─────────────────────────────────
+*.log
+npm-debug.log*
+
+# ── Misc ─────────────────────────────────
+*.bak
+*.tmp
+.aider*

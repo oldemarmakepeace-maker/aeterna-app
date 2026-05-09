@@ -1,0 +1,24 @@
+# AETERNA Backend
+
+## Byte-compiled
+__pycache__/
+*.py[cod]
+*$py.class
+
+## Virtual environment
+.venv/
+venv/
+env/
+
+## Environment variables
+.env
+
+## IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+## OS
+.DS_Store
+Thumbs.db

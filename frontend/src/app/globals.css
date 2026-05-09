@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════
+   AETERNA — Quiet Luxury Design System
+   Tailwind CSS v4 с @theme inline
+   ═══════════════════════════════════════════════════════════════ */
+
+@theme inline {
+  /* ── Surfaces ──────────────────────────────────────────── */
+  --color-surface-1: #0A0A0A;
+  --color-surface-2: #1A1A1A;
+  --color-surface-3: #2A2A2A;
+
+  /* ── Copper Accents ────────────────────────────────────── */
+  --color-copper: #B87333;
+  --color-copper-light: #D4956B;
+  --color-copper-dark: #8B5A2B;
+
+  /* ── Gunmetal ──────────────────────────────────────────── */
+  --color-gunmetal: #2C3539;
+  --color-gunmetal-light: #3D4A4F;
+
+  /* ── Text ──────────────────────────────────────────────── */
+  --color-text-primary: #E8E4E0;
+  --color-text-secondary: #8A8580;
+  --color-text-muted: #5A5550;
+
+  /* ── Fonts ─────────────────────────────────────────────── */
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+}
+
+/* ── Root Variables ──────────────────────────────────────────── */
+:root {
+  --copper-muted: rgba(184, 115, 51, 0.15);
+  --copper-glow: rgba(184, 115, 51, 0.25);
+  --copper-border: rgba(184, 115, 51, 0.1);
+  --glass-bg: rgba(26, 26, 26, 0.8);
+  --glass-border: rgba(44, 53, 57, 0.5);
+}
+
+/* ── Base ────────────────────────────────────────────────────── */
+html {
+  background-color: #0A0A0A;
+  color: #E8E4E0;
+}
+
+body {
+  background-color: #0A0A0A;
+  color: #E8E4E0;
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar (Quiet Luxury) ────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #0A0A0A;
+}
+::-webkit-scrollbar-thumb {
+  background: #2C3539;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B87333;
+}
+
+/* ── Glass Card Utility ──────────────────────────────────────── */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+}
+
+.glass-card-hover {
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+.glass-card-hover:hover {
+  border-color: var(--copper-border);
+  background: rgba(42, 42, 42, 0.6);
+}
+
+/* ── Copper Glow Effect ──────────────────────────────────────── */
+.copper-glow {
+  box-shadow: 0 0 20px var(--copper-muted),
+              0 0 60px rgba(184, 115, 51, 0.05);
+}
+
+.copper-glow-sm {
+  box-shadow: 0 0 10px var(--copper-muted);
+}
+
+/* ── Input Focus ─────────────────────────────────────────────── */
+.input-focus {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.input-focus:focus {
+  outline: none;
+  border-color: #B87333;
+  box-shadow: 0 0 0 3px rgba(184, 115, 51, 0.15),
+              0 0 20px rgba(184, 115, 51, 0.1);
+}
+
+/* ── Pulse Keyframe ──────────────────────────────────────────── */
+@keyframes copper-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-copper-pulse {
+  animation: copper-pulse 2s ease-in-out infinite;
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #1A1A1A 25%,
+    #2A2A2A 50%,
+    #1A1A1A 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* ── Hard Block Indicator ────────────────────────────────────── */
+.hard-block-border {
+  border-left: 3px solid #B87333;
+}
+
+/* ── Safe Area (iOS PWA) ─────────────────────────────────────── */
+.safe-bottom {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+}
