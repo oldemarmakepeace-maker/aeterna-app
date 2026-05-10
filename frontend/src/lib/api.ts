@@ -3,17 +3,20 @@
  * Fetch-обёртка для FastAPI бэкенда.
  */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
+const RAW_API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
+// Убираем слэш на конце, чтобы не было двойных слэшей
+const API_BASE = RAW_API_BASE.endsWith('/') ? RAW_API_BASE.slice(0, -1) : RAW_API_BASE;
 
 interface FetchOptions extends RequestInit {
   token?: string;
+  timeoutMs?: number;
 }
 
 async function apiFetch<T>(
   endpoint: string,
   options: FetchOptions = {}
 ): Promise<T> {
-  const { token, ...fetchOptions } = options;
+  const { token, timeoutMs = 15000, ...fetchOptions } = options;
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -21,18 +24,32 @@ async function apiFetch<T>(
     ...(fetchOptions.headers as Record<string, string> || {}),
   };
 
-  const res = await fetch(`${API_BASE}${endpoint}`, {
-    ...fetchOptions,
-    headers,
-  });
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
 
-  if (!res.ok) {
-    const error = await res.json().catch(() => ({ detail: res.statusText }));
-    throw new Error(error.detail || `API Error: ${res.status}`);
+  try {
+    const res = await fetch(`${API_BASE}${endpoint}`, {
+      ...fetchOptions,
+      headers,
+      signal: controller.signal,
+    });
+    
+    clearTimeout(id);
+
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({ detail: res.statusText }));
+      throw new Error(error.detail || `API Error: ${res.status}`);
+    }
+
+    if (res.status === 204) return undefined as T;
+    return res.json();
+  } catch (error: any) {
+    clearTimeout(id);
+    if (error.name === 'AbortError') {
+      throw new Error("Сервер не отвечает (таймаут соединения)");
+    }
+    throw error;
   }
-
-  if (res.status === 204) return undefined as T;
-  return res.json();
 }
 
 // ── Tasks ────────────────────────────────────────────────────

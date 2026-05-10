@@ -193,7 +193,7 @@ function SectionHeader({
 // ── Main Component ───────────────────────────────────────────
 export default function TaskList() {
   const { session } = useAuth();
-  const { tasks, isLoading, revalidate } = useTasks(session?.access_token);
+  const { tasks, isLoading, isError, revalidate } = useTasks(session?.access_token);
 
   const handleComplete = useCallback(
     async (id: string) => {
@@ -213,6 +213,26 @@ export default function TaskList() {
     },
     [session, tasks, revalidate]
   );
+
+  if (isError) {
+    return (
+      <div className="text-center py-12 border border-red-500/10 bg-red-500/5 rounded-2xl">
+        <p className="text-3xl mb-3 text-red-400/50">⚠️</p>
+        <p className="text-sm text-text-primary font-sans">
+          Сервер недоступен
+        </p>
+        <p className="text-xs text-text-muted font-sans mt-1">
+          Таймаут ожидания или ошибка сети.
+        </p>
+        <button 
+          onClick={() => revalidate()} 
+          className="mt-4 px-4 py-2 text-xs text-copper bg-copper/10 rounded-lg hover:bg-copper/20 transition-colors font-sans"
+        >
+          Повторить попытку
+        </button>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
